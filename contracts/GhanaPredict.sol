@@ -2,15 +2,16 @@
 pragma solidity ^0.8.6;
 import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 
-contract Polymarket {
+// GhanaPredict — a Ghanaian-themed prediction market (TESTNET ONLY, no real funds)
+contract GhanaPredict {
     address public owner;
-    address public polyToken;
+    address public ghToken;
 
     uint256 public totalQuestions = 0;
 
-    constructor(address _polyToken) {
+    constructor(address _ghToken) {
         owner = msg.sender;
-        polyToken = _polyToken;
+        ghToken = _ghToken;
     }
 
     mapping(uint256 => Questions) public questions;
@@ -92,7 +93,7 @@ contract Polymarket {
     function addYesBet(uint256 _questionId, uint256 _value) public payable {
         require(_questionId == 0, "Question ID cannot be null");
         Questions storage question = questions[_questionId];
-        ERC20(polyToken).transferFrom(msg.sender, address(this), _value);
+        ERC20(ghToken).transferFrom(msg.sender, address(this), _value);
         AmountAdded memory amountAdded = AmountAdded(
             msg.sender,
             _value,
@@ -107,7 +108,7 @@ contract Polymarket {
     function addNoBet(uint256 _questionId, uint256 _value) public payable {
         require(_questionId == 0, "Question ID cannot be null");
         Questions storage question = questions[_questionId];
-        ERC20(polyToken).transferFrom(msg.sender, address(this), _value);
+        ERC20(ghToken).transferFrom(msg.sender, address(this), _value);
         AmountAdded memory amountAdded = AmountAdded(
             msg.sender,
             _value,
@@ -146,7 +147,7 @@ contract Polymarket {
 
             for (uint256 i = 0; i < winningAddresses.length; i++) {
                 address payable _address = payable(winningAddresses[i]);
-                ERC20(polyToken).transfer(_address, winningAmount[_address]);
+                ERC20(ghToken).transfer(_address, winningAmount[_address]);
                 delete winningAmount[_address];
             }
             delete winningAddresses;
@@ -161,7 +162,7 @@ contract Polymarket {
 
             for (uint256 i = 0; i < winningAddresses.length; i++) {
                 address payable _address = payable(winningAddresses[i]);
-                ERC20(polyToken).transfer(_address, winningAmount[_address]);
+                ERC20(ghToken).transfer(_address, winningAmount[_address]);
                 delete winningAmount[_address];
             }
             delete winningAddresses;
